@@ -1,0 +1,39 @@
+FROM python:3.9
+
+#Instalamos AIRFLOW
+WORKDIR /home
+RUN mkdir airflow
+ENV AIRFLOW_HOME='~/../home/airflow'
+ENV PYTHON_VERSION=3.9
+ENV AIRFLOW_VERSION=2.5.3
+ENV CONSTRAINT_URL="https://raw.githubusercontent.com/apache/airflow/constraints-${AIRFLOW_VERSION}/constraints-${PYTHON_VERSION}.txt"
+RUN pip install "apache-airflow==${AIRFLOW_VERSION}" --constraint "${CONSTRAINT_URL}"
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+
+
+ENV AIRFLOW__CORE__EXECUTOR='LocalExecutor'
+ENV AIRFLOW__CORE__PARALLELISM=2
+ENV AIRFLOW__CORE__LOAD_EXAMPLES=False
+ENV AIRFLOW__DATABASE__SQL_ALCHEMY_CONN='postgresql+psycopg2://postgres_admin:udesa856@db-airflow.c6z3l3m7uu0r.us-east-2.rds.amazonaws.com:5432/postgres'
+ENV AIRFLOW__WEBSERVER__WORKERS=1
+ENV AIRFLOW__SCHEDULER__WEB_SERVER_PORT=8000
+#ENV AIRFLOW__WEBSERVER__BASE_URL='https://ec2-18-222-254-244.us-east-2.compute.amazonaws.com:8000/'
+
+RUN airflow db init
+
+RUN airflow users create \
+    --username admin \
+    --password admin \
+    --firstname First \
+    --lastname Last \
+    --role Admin \
+    --email admin@example.com
+
+
+RUN git clone https://github.com/ndominutti/SysDesign_OnlineRecommendationEngine.git
+
+RUN cp -r SysDesign_OnlineRecommendationEngine/dags airflow/
+COPY script.sh .
+
+ENTRYPOINT ["/bin/bash", "./script.sh"]

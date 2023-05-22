@@ -1,0 +1,5 @@
+fastapi==0.94.0
+pandas
+uvicorn
+psycopg2-binary
+boto3
