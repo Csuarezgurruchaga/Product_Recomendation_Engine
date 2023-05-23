@@ -16,3 +16,6 @@
    - **Possible solutions:**
      - Create an ECS IAM role and add the FullAccess policy to ECR. Pass this role to the task when creating it. The idea is that it may fail because it cannot read the private ECR.
      - Set up an autoscaling group linked to ECS. With the EC2 instance active, the ECS task can run. This idea arose from an AWS error stating that there were no active container instances within ECS.
+
+## Proyect Diagram
+![Proyect Diagram](https://github.com/Csuarezgurruchaga/Product_Recomendation_Engine/blob/main/Proyect%20Diagram.png)
