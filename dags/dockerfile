@@ -31,9 +31,10 @@ RUN airflow users create \
     --email admin@example.com
 
 
-RUN git clone https://github.com/ndominutti/SysDesign_OnlineRecommendationEngine.git
+RUN git clone https://github.com/Csuarezgurruchaga/Product_Recomendation_Engine.git
 
-RUN cp -r SysDesign_OnlineRecommendationEngine/dags airflow/
+
+RUN cp -r Product_Recomendation_Engine/dags airflow/
 COPY script.sh .
 
 ENTRYPOINT ["/bin/bash", "./script.sh"]
